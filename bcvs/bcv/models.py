@@ -1,4 +1,4 @@
-#coding:utf8
+# -*- coding: utf8 -*-
 from __future__ import unicode_literals
 
 from django.db import connection, models
@@ -35,7 +35,7 @@ class Author(models.Model):
 class PythonBookManager(models.Manager):
     def get_queryset(self):
         # 调用父类的方法，在原来返回的QuerySet的基础上返回新的QuerySet
-        return super(PythonBookManager, self).get_queryset().filter(title__icontains = 'openstack')
+        return super(PythonBookManager, self).get_queryset().filter(title__icontains ='openstack')
 
 
 class Book(models.Model):

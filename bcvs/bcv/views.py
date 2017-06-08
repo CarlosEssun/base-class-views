@@ -1,15 +1,12 @@
 # -*- coding: utf8 -*-
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import redirect
-from django.template import Context
-from django.template.loader import get_template
-
-from bcv.models import Publisher
+from django.views.generic import DetailView
+from bcv.models import Publisher, Book
 from forms import AuthorForm
 
 
@@ -41,7 +38,7 @@ class ContactView(FormView):
         # first_name = self.form_class.cleaned_data['first_name']
         # email = self.form_class.cleaned_data['email']
         # last_name = self.form_class.cleaned_data['last_name']
-        form_class.save()
+        form_class.save()  # 保存数据到数据库
         return super(ContactView, self).form_valid(form_class)
 
 # our view
@@ -62,6 +59,21 @@ class ContactView(FormView):
 #         })
 
 
+# 动态查询
+
+class PublisherBookList(ListView):
+    template_name = 'bcv/book_by_publisher.html'
+    context_object_name = 'book_publisher'
+
+    def get_queryset(self):
+        self.publisher = get_object_or_404(Publisher, name=self.args[0])
+        return Book.objects.filter(publisher=self.publisher)
+    # 添加额外的方法
+
+    def get_context_data(self, **kwargs):
+        context = super(PublisherBookList, self).get_context_data(**kwargs)
+        context['publisher'] = self.publisher
+        return context
 
 
 

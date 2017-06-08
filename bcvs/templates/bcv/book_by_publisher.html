@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{%block content%}
+
+<table>
+    <tr>
+      <th>书名</th>
+      <th>出版时间</th>
+      <th>出版社</th>
+    </tr>
+    {%for i in book_publisher%}
+    <tr>
+        <td>{{i.title}}</td>
+        <td>{{i.publication_date|date}}</td>
+        {%if publisher%}
+           <td>{{publisher}}</td>
+        {%endif%}
+
+    </tr>
+    {%endfor%}
+</table>
+
+
+{%endblock%}
