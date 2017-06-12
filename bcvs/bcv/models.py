@@ -24,6 +24,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=40)
     email = models.EmailField(
         blank=True, null=True, verbose_name='e-mail')  # blank表示可以不填。
+    last_accessed = models.DateTimeField()
 
     # verbose 为字段打上tag
 

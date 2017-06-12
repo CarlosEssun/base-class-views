@@ -18,6 +18,12 @@
     </tr>
     {%endfor%}
 </table>
-
-
+{%for i in bookdetail%}
+<p>{{i.title}}</p>     
+<p>{{i.publication_date}}</p>
+{% comment %}{%if book_model%}
+<p>{{book_model.title}}</p>
+<p>{{book_model.publication_date}}</p>
+{%endif%}{% endcomment %}
+{%endfor%}
 {%endblock%}

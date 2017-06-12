@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from bcv.views import PublisherList, AboutUsView, PublisherBookList
+from bcv.views import PublisherList, AboutUsView, PublisherBookList, BookDetailView
 from bcv.views import ContactView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^about-us/$', AboutUsView.as_view(), name='about-us'),
     url(r'^author/$', ContactView.as_view(), name='author'),
     url(r'^books/([\w-]+)/$', PublisherBookList.as_view(), name='book'),
+    url(r'^books_detail/(?P<title>[\w\-]+)/$', BookDetailView.as_view(), name='book_detail'),
 ]

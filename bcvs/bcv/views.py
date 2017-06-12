@@ -1,13 +1,18 @@
 # -*- coding: utf8 -*-
 # Create your views here.
-from django.shortcuts import get_object_or_404
+from time import timezone
+
+from django.shortcuts import get_object_or_404, render
 from django.utils.timezone import now
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import DetailView
-from bcv.models import Publisher, Book
+from bcv.models import Publisher, Book, Author
 from forms import AuthorForm
+from django.http import HttpResponse
+from django.views.decorators.http import require_GET
+import json
 
 
 class PublisherList(ListView):
@@ -75,5 +80,26 @@ class PublisherBookList(ListView):
         context['publisher'] = self.publisher
         return context
 
+# 关键字查询
 
 
+class BookDetailView(DetailView):
+    model = Book
+    slug_field = 'title'  # model 中读取的属性
+    slug_url_kwarg = 'title'  # url中捕获的参数名称
+    template_name = 'bcv/book_by_publisher.html'
+
+    # def get(self, request, slug):  # 返回的是一个dict
+    #     # context = super(BookDetailView, self).get(slug)
+    #     acct = get_object_or_404(self.model.book_objects, title=slug)
+    #     return render(request, self.template_name, {'book_model': acct}) 
+
+    def get_queryset(self, **kwargs):
+        self.queryset = super(BookDetailView, self).get_queryset()
+        self.title = self.queryset.filter(title=self.kwargs['title'])
+        return self.title
+
+    def get_context_data(self, **kwargs):
+        context = super(BookDetailView, self).get_context_data(**kwargs)
+        context['bookdetail'] = self.title
+        return context
